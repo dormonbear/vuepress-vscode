@@ -1,0 +1,4 @@
+// PubSub
+export const WINDOW_ONRESIZE = 'WINDOW_ONRESIZE';
+export const ANCHOR_SCROLL = 'ANCHOR_SCROLL';
+export const CURRENT_PAGE = 'CURRENT_PAGE';

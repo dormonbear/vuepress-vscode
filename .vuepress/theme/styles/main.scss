@@ -1,0 +1,62 @@
+@import "scrollbar";
+@import "gitment";
+
+a {
+  text-decoration : none;
+}
+
+body {
+  font-family      : "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;;
+  height           : 100%;
+  width            : 100%;
+  margin           : 0;
+  padding          : 0;
+  overflow         : hidden;
+  font-size        : 11px;
+  user-select      : none;
+  color            : #cccccc;
+  background-color : #1e1e1e;
+}
+
+.sash {
+  position       : absolute;
+  z-index        : 90;
+  touch-action   : none;
+  width          : 4px;
+  pointer-events : auto;
+
+  &.horizontal {
+    left   : 0;
+    width  : 100%;
+    cursor : ns-resize;
+
+    &.resizing {
+      * {
+        cursor : ns-resize !important;
+      }
+    }
+  }
+
+  &.vertical {
+    top    : 0;
+    cursor : ew-resize;
+    height : calc(100vh - 22px);
+  }
+
+  &.disabled {
+    cursor : default !important;
+  }
+}
+
+.tree-wrapper {
+  overflow : hidden;
+  height   : 100%;
+  width    : 100%;
+  position : relative;
+
+  .tree-rows {
+    position : absolute;
+    width    : 100%;
+    height   : 100%;
+  }
+}

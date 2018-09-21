@@ -1,0 +1,10 @@
+/node_modules/
+/.vuepress/theme/node_modules/
+/.vuepress/theme/yarn.lock
+/.vuepress/theme/yarn-error.log
+/yarn.lock
+/.idea/
+/.vuepress/dist/
+/yarn-error.log
+/.vscode
+/.DS_Store
