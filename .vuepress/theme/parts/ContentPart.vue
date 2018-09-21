@@ -3,7 +3,7 @@
     <div class="article-container">
       <div class="article" ref="article" @mouseenter="onArticleMouseEnter" @mouseleave="onArticleMouseLeave">
         <Content class="article-content"></Content>
-        <div class="comments-container"></div>
+        <div id="comments-container" class="comments-container"></div>
       </div>
     </div>
   </div>
@@ -14,13 +14,14 @@
   import _                 from 'lodash';
   import PubSub            from 'pubsub-js';
   import { ANCHOR_SCROLL } from "../utils/constants";
+  import Gitalk            from 'gitalk';
 
   export default {
     name   : "content-part",
     data() {
       return {
         ps           : PerfectScrollbar,
-        scrollVisible: false
+        scrollVisible: false,
       };
     },
     mounted() {
@@ -33,37 +34,22 @@
           return item.hash === '#' + encodeURIComponent(data);
         });
         if (target) {
-          container.scrollTop =
-            Math.max(
-              document.body.scrollTop,
-              target.parentElement.offsetTop - 10
-            );
+          container.scrollTop = Math.max(
+            document.body.scrollTop,
+            target.parentElement.offsetTop - 10
+          );
         }
       });
 
-      const Valine = require('valine');
-      if (typeof window !== 'undefined') {
-        this.window = window;
-        window.AV = require('leancloud-storage');
-      }
-
-      new Valine(
-        {
-          el         : '.comments-container',
-          appId      : '1dKnN1anqIz6mjtStD4IGwU6-gzGzoHsz',// your appId
-          appKey     : 'c52JHNklKRvNq5NxJ09zES2o', // your appKey
-          notify     : false,
-          verify     : true,
-          avatar     : 'retro',
-          placeholder: '随便逼逼'
-        });
-
+      this.renderComment();
     },
     watch  : {
       $page: {
         handler(val, newVal) {
           if (val.path !== newVal.path) {
             document.querySelector(".article").scrollTop = 0;
+            document.querySelector('.article').removeChild(document.querySelector('#comments-container'));
+            this.renderComment();
             this.ps.update();
           }
         }
@@ -100,17 +86,30 @@
       onArticleMouseEnter() {
         this.scrollVisible = true;
         let article = this.$refs.article;
-        article.className =
-          article.className.split(" invisible")
-                 .join("") + " visible";
+        article.className = article.className.split(" invisible").join("") + " visible";
       },
 
       onArticleMouseLeave() {
         this.scrollVisible = false;
         let article = this.$refs.article;
-        article.className =
-          article.className.split(" visible")
-                 .join("") + " invisible";
+        article.className = article.className.split(" visible").join("") + " invisible";
+      },
+      renderComment() {
+        let commentContainerEl = document.createElement('div');
+        commentContainerEl.className = 'comments-container';
+        commentContainerEl.id = 'comments-container';
+        document.querySelector('.article').appendChild(commentContainerEl);
+        new Gitalk(
+          {
+            clientID           : '122e2ab9330dd3e3a733',
+            clientSecret       : 'ee0371cf1d498e21ec996fe8628b7760fe7c96f5',
+            repo               : 'dormonbear.github.io',
+            owner              : 'dormonbear',
+            admin              : ['dormonbear'],
+            id                 : location.pathname,      // Ensure uniqueness and length less than 50
+            distractionFreeMode: false  // Facebook-like distraction free mode
+          }
+        ).render('comments-container');
       }
     }
   };
@@ -139,25 +138,18 @@
     }
   }
 
-  .v * {
-    color : #cccccc;
-  }
-
-  .v .vlist .vcard .vhead .vsys {
-    background : #333333 !important;
+  .article-content {
+    user-select              : text;
+    -ms-text-size-adjust     : 100%;
+    -webkit-text-size-adjust : 100%;
+    font-family              : -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size                : 16px;
+    padding                  : 0 26px;
+    line-height              : 22px;
+    word-wrap                : break-word;
   }
 
   .article-content {
-    user-select : text;
-    font-family : "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-    font-size   : 14px;
-    padding     : 0 26px;
-    line-height : 22px;
-    word-wrap   : break-word;
-  }
-
-  .article-content, .vcontent {
     > h1,
     > h2,
     > h3,
@@ -210,6 +202,7 @@
 
     a {
       text-decoration : none;
+      color           : #007acc;
     }
 
     a:hover {
@@ -291,32 +284,19 @@
       box-shadow        : 2px 2px 2px rgba(0, 0, 0, 0.25);
     }
 
-    a {
-      color : #007acc;
+    code {
+      font-family : "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
     }
 
-    code[class*="language-"],
     pre[class*="language-"] {
-      color           : #ccc;
-      background      : none;
-      font-family     : Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
-      text-align      : left;
-      white-space     : pre;
-      white-space     : -moz-pre-wrap;
-      white-space     : -pre-wrap;
-      white-space     : -o-pre-wrap;
-      word-spacing    : normal;
-      word-break      : normal;
-      word-wrap       : normal;
-      line-height     : 1.5;
-      -moz-tab-size   : 4;
-      -o-tab-size     : 4;
-      tab-size        : 4;
-      -webkit-hyphens : none;
-      -ms-hyphens     : none;
-      hyphens         : none;
-      box-shadow      : 1px 1px 1px rgba(0, 0, 0, 0.25);
-      transition      : box-shadow 0.5s ease;
+      color       : #ccc;
+      background  : none;
+      font-family : "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      text-align  : left;
+      white-space : pre;
+      line-height : 1.5;
+      box-shadow  : 1px 1px 1px rgba(0, 0, 0, 0.25);
+      transition  : box-shadow 0.5s ease;
 
       &:hover {
         box-shadow : 3px 3px 3px rgba(0, 0, 0, 0.5);
@@ -435,400 +415,5 @@
 
   }
 
-  .comments-container {
-    * {
-      box-sizing  : border-box;
-      //font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", Arial, sans-serif;
-      //font-size: 16px;
-      line-height : 1.42857143;
-      color       : #cccccc;
-      transition  : all .3s ease;
-    }
-    .vinput {
-      border    : none;
-      resize    : none;
-      outline   : none;
-      padding   : 10px 0;
-      max-width : 100%;
-      font-size : .775rem;
-    }
-    .vwrap {
-      border        : 1px solid #f0f0f0;
-      border-radius : 4px;
-      margin-bottom : 10px;
-      overflow      : hidden;
-      position      : relative;
-      padding       : 10px;
-      input {
-        background : transparent;
-      }
-      .vheader {
-        .vinput {
-          width         : 33.33%;
-          border-bottom : 1px #dedede dashed;
-        }
-        &.item2 .vinput {
-          width : 50%;
-        }
-        &.item1 .vinput {
-          width : 100%;
-        }
-        .vinput:focus {
-          border-bottom-color : #eb5055;
-        }
-        @media screen and (max-width : 520px) {
-          .vinput {
-            width : 100%;
-          }
-          &.item2 .vinput {
-            width : 100%;
-          }
-        }
-      }
-      .vcontrol {
-        //background: #fdfdfd;
-        font-size : 0;
-        .col {
-          display        : inline-block;
-          font-size      : .725rem;
-          vertical-align : middle;
-          color          : #ccc;
-          &.text-right {
-            text-align : right;
-          }
-          svg {
-            margin-right   : 2px;
-            overflow       : hidden;
-            fill           : currentColor;
-            vertical-align : middle;
-          }
-          &.col-40 {
-            width : 40%;
-          }
-          &.col-60 {
-            width : 60%;
-          }
-          &.split {
-            width : 50%;
-          }
-        }
-      }
-      .vmark {
-        position   : absolute;
-        background : rgba(0, 0, 0, .65);
-        width      : 100%;
-        height     : 100%;
-        left       : 0;
-        top        : 0;
-        .valert {
-          padding-top : 3rem;
-          .vtext {
-            color   : #fff;
-            padding : 1rem 0;
-          }
-          .vcode {
-            width         : 4.6875rem;
-            border-radius : .3125rem;
-            padding       : .5rem;
-            background    : #dedede;
-            &:focus {
-              border-color     : #3090e4;
-              background-color : #fff;
-            }
-          }
-        }
-        @media screen and(max-width : 720px) {
-          .valert {
-            padding-top : 5.5rem;
-            .vtext {
-              color   : #fff;
-              padding : 1rem 0;
-            }
-          }
-        }
-      }
-    }
-    .power {
-      color     : #999;
-      font-size : .75rem;
-      a {
-        font-size : .75rem;
-      }
-    }
-    .info {
-      font-size : 0;
-      padding   : 5px;
-      .col {
-        font-size      : .875rem;
-        display        : inline-block;
-        width          : 50%;
-        vertical-align : middle;
-
-      }
-      .count {
-        .num {
-          font-weight : 600;
-          font-size   : 1.25rem;
-        }
-      }
-    }
-    a {
-      text-decoration : none;
-      color           : #555;
-      &:hover {
-        color : #222;
-      }
-    }
-    ul,
-    li {
-      list-style : none;
-      margin     : 0 auto;
-      padding    : 0;
-    }
-    .txt-center {
-      text-align : center;
-    }
-    .txt-right {
-      text-align : right;
-    }
-    .pd5 {
-      padding : 5px;
-    }
-    .pd10 {
-      padding : 10px;
-    }
-    .veditor {
-      width      : 100%;
-      height     : 8.75rem;
-      font-size  : .875rem;
-      background : transparent;
-    }
-    .vbtn {
-      transition-duration : .4s;
-      text-align          : center;
-      color               : #313131;
-      border              : 1px solid #f7f7f7;
-      border-radius       : 1.9rem;
-      background-color    : #f7f7f7;
-      display             : inline-block;
-      background          : #ededed;
-      margin-bottom       : 0;
-      font-weight         : 400;
-      vertical-align      : middle;
-      touch-action        : manipulation;
-      cursor              : pointer;
-      white-space         : nowrap;
-      padding             : .5rem 1.25rem;
-      font-size           : .875rem;
-      line-height         : 1.42857143;
-      user-select         : none;
-      outline             : none;
-      & + .vbtn {
-        margin-left : 1.25rem;
-      }
-    }
-    .vbtn:active,
-    .vbtn:hover {
-      color            : #3090e4;
-      border-color     : #3090e4;
-      background-color : #fff;
-    }
-    .vempty {
-      padding    : 1.25px;
-      text-align : center;
-      color      : #999;
-    }
-    .vlist {
-      width : 100%;
-      .vcard {
-        padding-top : 1.5rem;
-        position    : relative;
-        display     : block;
-        &:after {
-          content : '';
-          clear   : both;
-          display : block;
-        }
-        .vimg {
-          width         : 2.5rem;
-          height        : 2.5rem;
-          float         : left;
-          border-radius : 50%;
-          margin-right  : .7525rem;
-        }
-        .vhead {
-          line-height   : 1;
-          margin-bottom : .625rem;
-          margin-top    : 0;
-          a {
-            font-size    : .8135rem;
-            font-weight  : 700;
-            color        : rgb(44, 32, 32);
-            margin-right : .875rem;
-            &:hover {
-              color : #D7191A;
-            }
-          }
-        }
-        section {
-          overflow       : hidden;
-          padding-bottom : 1.5rem;
-          border-bottom  : 1px solid #f5f5f5;
-          .vfooter {
-            position : relative;
-            .vtime {
-              color        : #b3b3b3;
-              font-size    : .75rem;
-              margin-right : .875rem;
-            }
-            .vat {
-              font-size : .8125rem;
-              color     : #ef2f11;
-              cursor    : pointer;
-            }
-          }
-        }
-        .vcontent {
-          word-wrap     : break-word;
-          word-break    : break-all;
-          text-align    : justify;
-          color         : #4A4A4A;
-          font-size     : .875rem;
-          line-height   : 2;
-          position      : relative;
-          margin-bottom : .75rem;
-          a {
-            font-size       : .875rem;
-            color           : #708090;
-            text-decoration : double;
-            &:hover {
-              color : #D7191A;
-            }
-          }
-          pre,
-          .code,
-          code {
-            overflow      : auto;
-            padding       : 2px 6px;
-            word-wrap     : break-word;
-            color         : #555;
-            background    : #f5f2f2;
-            border-radius : 3px;
-            font-size     : .875rem;
-            margin        : 5px 0;
-          }
-          &.expand {
-            cursor     : pointer;
-            max-height : 11.25rem;
-            overflow   : hidden;
-            &:before {
-              display        : block;
-              content        : "";
-              position       : absolute;
-              width          : 100%;
-              left           : 0;
-              top            : 0;
-              bottom         : 3.15rem;
-              pointer-events : none;
-              background     : linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .9));
-            }
-            &:after {
-              display        : block;
-              content        : "Click on expand";
-              text-align     : center;
-              color          : #828586;
-              position       : absolute;
-              width          : 100%;
-              height         : 3.15rem;
-              line-height    : 3.15rem;
-              left           : 0;
-              bottom         : 0;
-              pointer-events : none;
-              background     : rgba(255, 255, 255, .9);
-            }
-          }
-        }
-      }
-    }
-    .vpage {
-      padding : .35rem;
-      i {
-        display    : inline-block;
-        padding    : .05rem .65rem;
-        font-size  : .785rem;
-        border     : 1px solid #f0f0f0;
-        font-style : normal;
-        cursor     : pointer;
-        & + i {
-          margin-left : .35rem;
-        }
-        &.active {
-          border : none;
-          color  : #ccc;
-          cursor : default;
-        }
-      }
-    }
-    .clear {
-      content : '';
-      display : block;
-      clear   : both;
-    }
-    /************ Loading ************/
-    .spinner {
-      margin     : 0.625rem auto;
-      width      : 3.15rem;
-      height     : 1.875rem;
-      text-align : center;
-      font-size  : 10px;
-    }
-    .spinner > div {
-      background-color  : #9c9c9c;
-      height            : 100%;
-      width             : .375rem;
-      margin-right      : 0.19rem;
-      display           : inline-block;
-      -webkit-animation : sk-stretchdelay 1.2s infinite ease-in-out;
-      animation         : sk-stretchdelay 1.2s infinite ease-in-out;
-    }
-    .spinner .r2 {
-      -webkit-animation-delay : -1.1s;
-      animation-delay         : -1.1s;
-    }
-    .spinner .r3 {
-      -webkit-animation-delay : -1.0s;
-      animation-delay         : -1.0s;
-    }
-    .spinner .r4 {
-      -webkit-animation-delay : -0.9s;
-      animation-delay         : -0.9s;
-    }
-    .spinner .r5 {
-      -webkit-animation-delay : -0.8s;
-      animation-delay         : -0.8s;
-    }
-    @-webkit-keyframes sk-stretchdelay {
-      0%,
-      40%,
-      100% {
-        -webkit-transform : scaleY(0.4)
-      }
-      20% {
-        -webkit-transform : scaleY(1.0)
-      }
-    }
-    @keyframes sk-stretchdelay {
-      0%,
-      40%,
-      100% {
-        transform         : scaleY(0.4);
-        -webkit-transform : scaleY(0.4);
-      }
-      20% {
-        transform         : scaleY(1.0);
-        -webkit-transform : scaleY(1.0);
-      }
-    }
-  }
 
 </style>

@@ -3,18 +3,38 @@ title: This is a test page
 seti: default
 date: 2018-09-21 14:23:00
 ---
-# Welcome 
+# Welcome 欢迎
 
+中文测试，您好世界！
+林贝大法好
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
 > This is from hexo
+
+## Letax 测试
 
 ## Quick Start
 
 ### Create a new post
 
-``` bash
-$ hexo new "My New Post"
+```javascript
+ let container = document.querySelector('.article');
+      this.ps = new PerfectScrollbar(container);
+      container.addEventListener('ps-scroll-y', this.onScroll);
+
+      PubSub.subscribe(ANCHOR_SCROLL, (msg, data) => {
+        let target = [].slice.call(document.querySelectorAll('.header-anchor')).find((item) => {
+          return item.hash === '#' + encodeURIComponent(data);
+        });
+        if (target) {
+          container.scrollTop = Math.max(
+            document.body.scrollTop,
+            target.parentElement.offsetTop - 10
+          );
+        }
+      });
+
+      this.renderComment();
 ```
 
 More info: [Writing](https://hexo.io/docs/writing.html)
