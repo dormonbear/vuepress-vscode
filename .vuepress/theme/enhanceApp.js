@@ -32,7 +32,7 @@ function integrateGitment(router) {
     const gitment = new Gitment(
       {
         id   : fullPath,
-        owner: 'dormon@dormon.net',
+        owner: 'dormonbear',
         repo : 'dormonbear.github.io',
         oauth: {
           client_id    : '122e2ab9330dd3e3a733',
