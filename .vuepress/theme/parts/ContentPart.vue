@@ -14,7 +14,6 @@
   import _                 from 'lodash';
   import PubSub            from 'pubsub-js';
   import { ANCHOR_SCROLL } from "../utils/constants";
-  import Gitalk            from 'gitalk';
 
   export default {
     name   : "content-part",
@@ -99,6 +98,7 @@
         commentContainerEl.className = 'comments-container';
         commentContainerEl.id = 'comments-container';
         document.querySelector('.article').appendChild(commentContainerEl);
+        const Gitalk = require('gitalk');
         new Gitalk(
           {
             clientID           : '122e2ab9330dd3e3a733',
