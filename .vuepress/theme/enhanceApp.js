@@ -1,45 +1,51 @@
 import PubSub              from "pubsub-js";
 import { WINDOW_ONRESIZE } from "./utils/constants";
+import Valine              from 'valine';
 
-function integrateGitment(router) {
-  const scriptGitment = document.createElement('script');
-  scriptGitment.src = 'https://imsun.github.io/gitment/dist/gitment.browser.js';
-  document.body.appendChild(scriptGitment);
-
+function integrateValine(router) {
   let lastPath;
 
   router.afterEach((to) => {
     if (!lastPath || lastPath !== to.path) {
-      if (scriptGitment.onload) {
-        renderGitment(to.path);
-        lastPath = to.path;
-      } else {
-        scriptGitment.onload = () => {
-          const commentsContainer = document.createElement('div');
-          commentsContainer.id = 'comments-container';
-          commentsContainer.classList.add('content');
-          const $page = document.querySelector('.article');
-          if ($page) {
-            $page.appendChild(commentsContainer);
-            renderGitment(to.path);
-          }
-        };
+      // if (scriptGitment.onload) {
+      //   renderGitment(to.path);
+      //   lastPath = to.path;
+      // } else {
+      //   scriptGitment.onload = () => {
+      //     const commentsContainer = document.createElement('div');
+      //     commentsContainer.id = 'comments-container';
+      //     commentsContainer.classList.add('content');
+      //     const $page = document.querySelector('.article');
+      //     if ($page) {
+      //       $page.appendChild(commentsContainer);
+      //       renderGitment(to.path);
+      //     }
+      //   };
+      // }
+      if (typeof window !== 'undefined') {
+        renderValine(to.path);
       }
     }
+    renderValine(to.path);
   });
 
-  function renderGitment(fullPath) {
-    const gitment = new Gitment(
+  if (typeof window !== 'undefined') {
+    this.window = window;
+    window.AV = require('leancloud-storage');
+  }
+
+  function renderValine(path) {
+    new Valine(
       {
-        id   : fullPath,
-        owner: 'dormonbear',
-        repo : 'dormonbear.github.io',
-        oauth: {
-          client_id    : '122e2ab9330dd3e3a733',
-          client_secret: 'ee0371cf1d498e21ec996fe8628b7760fe7c96f5',
-        },
+        el         : '.comments-container',
+        appId      : '1dKnN1anqIz6mjtStD4IGwU6-gzGzoHsz',// your appId
+        appKey     : 'c52JHNklKRvNq5NxJ09zES2o', // your appKey
+        notify     : false,
+        verify     : false,
+        avatar     : 'retro',
+        placeholder: '随便逼逼',
+        path       : path
       });
-    gitment.render('comments-container');
   }
 }
 
@@ -68,10 +74,10 @@ export default ({ Vue, options, router, siteData }) => {
       next();
     }
   });
-
-  try {
-    document && integrateGitment(router);
-  } catch (e) {
-    console.error(e.message);
-  }
+  //
+  // try {
+  //   document && integrateValine(router);
+  // } catch (e) {
+  //   console.error(e.message);
+  // }
 }
