@@ -33,10 +33,10 @@ function integrateGitment(router) {
       {
         id   : fullPath,
         owner: 'dormon@dormon.net',
-        repo : 'blogcomment',
+        repo : 'dormonbear.github.io',
         oauth: {
-          client_id    : '80c1932fcb7670ab08be',
-          client_secret: '6117ff85c82bb7fae177342456b0ba00b11ef69f',
+          client_id    : '122e2ab9330dd3e3a733',
+          client_secret: 'ee0371cf1d498e21ec996fe8628b7760fe7c96f5',
         },
       });
     gitment.render('comments-container');
