@@ -7,7 +7,7 @@
                    :style="{width: navbarWidth + 'px', minWidth: '170px'}"
                    :checkedItem="checkedItem"
       ></navbar-part>
-      <content-part :style="{width: `${contentPartWidth}px`}"></content-part>
+      <content-part :width="contentPartWidth" :style="{width: `${contentPartWidth}px`}"></content-part>
       <div class="sash vertical" :style="{left: showNavbar ? navbarWidth - 2 + 'px' : 0}"
            @mousedown="onSashMouseDown"></div>
     </div>

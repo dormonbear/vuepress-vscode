@@ -1,7 +1,7 @@
 <template>
   <div class="content-view">
     <div class="article-container">
-      <div class="article" ref="article" @mouseenter="onArticleMouseEnter" @mouseleave="onArticleMouseLeave">
+      <div class="article" ref="article" @mouseenter="onArticleMouseEnter" @mouseleave="onArticleMouseLeave" :style="{width: width + 'px'}">
         <Content class="article-content"></Content>
         <div id="comments-container" class="comments-container"></div>
       </div>
@@ -17,6 +17,7 @@
 
   export default {
     name   : "content-part",
+    props  : ['width'],
     data() {
       return {
         ps           : PerfectScrollbar,
@@ -101,12 +102,12 @@
         const Gitalk = require('gitalk');
         new Gitalk(
           {
-            clientID           : '122e2ab9330dd3e3a733',
-            clientSecret       : 'ee0371cf1d498e21ec996fe8628b7760fe7c96f5',
-            repo               : 'dormonbear.github.io',
-            owner              : 'dormonbear',
-            admin              : ['dormonbear'],
-            id                 : location.pathname,
+            clientID    : '122e2ab9330dd3e3a733',
+            clientSecret: 'ee0371cf1d498e21ec996fe8628b7760fe7c96f5',
+            repo        : 'dormonbear.github.io',
+            owner       : 'dormonbear',
+            admin       : ['dormonbear'],
+            id          : location.pathname,
           }
         ).render('comments-container');
       }
