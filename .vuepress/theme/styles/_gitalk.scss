@@ -20,25 +20,28 @@
 
 .markdown-body .pl-c1,
 .markdown-body .pl-s .pl-v {
-  color : #005cc5;
+  color : #cccccc;
 }
 
-.markdown-body .pl-e,
+.markdown-body .pl-e {
+  color : #e2777a;
+}
+
 .markdown-body .pl-en {
-  color : #6f42c1;
+  color : #f08d49;
 }
 
 .markdown-body .pl-smi,
 .markdown-body .pl-s .pl-s1 {
-  color : #24292e;
+  color : #cccccc;
 }
 
 .markdown-body .pl-ent {
-  color : #22863a;
+  color : #e2777a;
 }
 
 .markdown-body .pl-k {
-  color : #d73a49;
+  color : #cc99cd;
 }
 
 .markdown-body .pl-s,
@@ -61,13 +64,11 @@
 }
 
 .markdown-body .pl-ii {
-  color            : #fafbfc;
-  background-color : #b31d28;
+  color : #fafbfc;
 }
 
 .markdown-body .pl-c2 {
-  color            : #fafbfc;
-  background-color : #d73a49;
+  color : #fafbfc;
 }
 
 .markdown-body .pl-c2::before {
@@ -707,6 +708,25 @@
 
 .markdown-body hr {
   border-bottom-color : #eee;
+}
+
+.markdown-body {
+  ::-webkit-scrollbar {
+    width  : 10px;
+    height : 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color : rgba(121, 121, 121, 0.4);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color : rgba(100, 100, 100, 0.7);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color : rgba(85, 85, 85, 0.8);
+  }
 }
 
 /* variables */

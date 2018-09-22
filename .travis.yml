@@ -29,3 +29,6 @@ deploy:
   target-branch: master
   on:
     branch: master
+branches:
+  only:
+  - master

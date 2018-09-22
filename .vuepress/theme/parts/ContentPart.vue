@@ -106,8 +106,7 @@
             repo               : 'dormonbear.github.io',
             owner              : 'dormonbear',
             admin              : ['dormonbear'],
-            id                 : location.pathname,      // Ensure uniqueness and length less than 50
-            distractionFreeMode: false  // Facebook-like distraction free mode
+            id                 : location.pathname,
           }
         ).render('comments-container');
       }
@@ -412,8 +411,5 @@
     ::-webkit-scrollbar-thumb:active {
       background-color : rgba(85, 85, 85, 0.8);
     }
-
   }
-
-
 </style>
