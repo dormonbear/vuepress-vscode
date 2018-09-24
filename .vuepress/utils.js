@@ -7,6 +7,7 @@ const { parseFrontmatter } = require('vuepress/lib/util');
 const readTitleFromMd = path => {
   const lines = fs.readFileSync(path, 'utf8').split('\n').map(l => l.trim());
   const headerLine = lines.find(l => /^#[^#].*$/.test(l));
+  if (!headerLine) return;
   const match = headerLine.match(/^#(.*)/);
   if (!match) return;
   return match[1].trim();

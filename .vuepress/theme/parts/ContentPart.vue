@@ -159,6 +159,7 @@
     > p,
     > blockquote,
     > table,
+    ul, 
     ol,
     .extra-class {
       position : relative;
@@ -176,15 +177,8 @@
       }
 
       &:hover:before {
-        content     : "";
-        display     : block;
-        position    : absolute;
-        top         : 0;
         left        : -12px;
-        height      : 100%;
         opacity     : 1;
-        border-left : 3px solid #569cd6;
-        transition  : all 0.5s ease;
       }
     }
 
@@ -286,6 +280,7 @@
 
     code {
       font-family : "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      color: #ce9178;
     }
 
     pre[class*="language-"] {
@@ -326,7 +321,7 @@
     .token.comment,
     .token.doctype,
     .token.prolog {
-      color : #999;
+      color : #6a9955;
     }
 
     .token.punctuation {
