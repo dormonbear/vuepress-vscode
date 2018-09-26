@@ -10,6 +10,9 @@
     </div>
 
     <div class="footerbar-item right">
+      <a href="//creativecommons.org/licenses/by-sa/3.0/deed.zh" target="_blank" class="status">
+        所有内容遵循 CC BY-SA 3.0 协议
+      </a>
       <a class="status">
         最后更新于 {{lastUpdatedAt}}
       </a>
