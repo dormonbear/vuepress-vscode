@@ -14,6 +14,7 @@
   import _                 from 'lodash';
   import PubSub            from 'pubsub-js';
   import { ANCHOR_SCROLL } from "../utils/constants";
+  import MD5               from 'md5'
 
   export default {
     name   : "content-part",
@@ -107,7 +108,7 @@
             repo        : 'dormonbear.github.io',
             owner       : 'dormonbear',
             admin       : ['dormonbear'],
-            id          : location.pathname,
+            id          : MD5(location.pathname),
           }
         ).render('comments-container');
       }
